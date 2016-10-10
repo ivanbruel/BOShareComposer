@@ -12,7 +12,7 @@ public struct OpenGraph {
 
   public let description: String?
   public let title: String?
-  public let imageURL: NSURL?
+  public let imageURL: URL?
 
   // MARK: HTML
   init?(html: String) {
@@ -22,7 +22,7 @@ public struct OpenGraph {
     description = parser.contentFromMetatag("og:description")
 
     if let imageMeta = parser.contentFromMetatag("og:image") {
-      imageURL = NSURL(string: imageMeta)
+      imageURL = URL(string: imageMeta)
     } else {
       imageURL = nil
     }
@@ -30,7 +30,7 @@ public struct OpenGraph {
 }
 
 extension OpenGraph {
-  static func fetchMetadata(url: NSURL, completion: (OpenGraph?) -> Void) {
+  static func fetchMetadata(_ url: URL, completion: @escaping (OpenGraph?) -> Void) {
     executeRequest(url: url) { html in
       guard let html = html else {
         completion(nil)
@@ -40,19 +40,19 @@ extension OpenGraph {
     }
   }
 
-  private static func executeRequest(url url: NSURL, completion: (String?) -> ()) {
-    let session = NSURLSession.sharedSession()
+  fileprivate static func executeRequest(url: URL, completion: @escaping (String?) -> ()) {
+    let session = URLSession.shared
 
-    let request = NSMutableURLRequest(URL: url, cachePolicy: .ReturnCacheDataElseLoad,
+    let request = MutableURLRequest(url: url, cachePolicy: .returnCacheDataElseLoad,
                                       timeoutInterval: 10)
     request.setValue("Facebot", forHTTPHeaderField: "User-Agent")
-    let task = session.dataTaskWithRequest(request) { (data, response, error) in
-      guard let data = data where error == nil else {
-        completion(nil)
-        return
+    let task = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) in
+      guard let data = data , error == nil else {
+      completion(nil)
+      return
       }
-      completion(String(data: data, encoding: NSASCIIStringEncoding))
-    }
+      completion(String(data: data, encoding: String.Encoding.ascii))
+      })
     task.resume()
   }
 }

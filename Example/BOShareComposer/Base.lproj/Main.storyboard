@@ -1,8 +1,9 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="16A319" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="vXZ-lx-hvc">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
@@ -14,32 +15,32 @@
                         <viewControllerLayoutGuide type="bottom" id="2fi-mo-0CV"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="kh9-bI-dsS">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P45-wr-ZfT">
-                                <rect key="frame" x="241" y="285" width="118" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P45-wr-ZfT">
+                                <frame key="frameInset" minX="241" minY="285" width="118" height="30"/>
                                 <state key="normal" title="Share with image"/>
                                 <connections>
-                                    <action selector="share:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="0uM-gV-EyM"/>
+                                    <action selector="shareWithSender:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="VQv-RE-CwQ"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P6J-PC-Cnc">
-                                <rect key="frame" x="230" y="323" width="141" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P6J-PC-Cnc">
+                                <frame key="frameInset" minX="230" minY="323" width="141" height="30"/>
                                 <state key="normal" title="Share without image"/>
                                 <connections>
-                                    <action selector="shareWithoutMetadata:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="GWQ-IX-wdd"/>
+                                    <action selector="shareWithoutDataWithSender:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="EKh-s5-5Tm"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iUR-SU-jR2">
-                                <rect key="frame" x="219" y="361" width="162" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iUR-SU-jR2">
+                                <frame key="frameInset" minX="219" minY="361" width="162" height="30"/>
                                 <state key="normal" title="share without metadata"/>
                                 <connections>
-                                    <action selector="shareWithoutData:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="la8-uz-YRD"/>
+                                    <action selector="shareWithoutMetadataWithSender:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="hst-BS-Iqx"/>
                                 </connections>
                             </button>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="iUR-SU-jR2" firstAttribute="top" secondItem="P6J-PC-Cnc" secondAttribute="bottom" constant="8" id="0D0-oI-bEr"/>
                             <constraint firstItem="P6J-PC-Cnc" firstAttribute="top" secondItem="P45-wr-ZfT" secondAttribute="bottom" constant="8" id="KUW-M8-2gr"/>

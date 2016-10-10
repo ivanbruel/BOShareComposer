@@ -30,7 +30,7 @@ public struct ShareOptions {
 
   public init (tintColor: UIColor = UIView().tintColor, title: String = "Share", dismissText: String = "Cancel",
                confirmText: String = "Send", showMetadata: Bool = true,
-               keyboardAppearance: UIKeyboardAppearance = .Dark) {
+               keyboardAppearance: UIKeyboardAppearance = .dark) {
     self.tintColor = tintColor
     self.title = title
     self.dismissText = dismissText

@@ -13,12 +13,12 @@ public struct ShareContent {
   public var text: String
 
   // If you want to specify a URL to the content - This url does no show in the editor
-  public let link: NSURL?
+  public let link: URL?
 
   // If you are sending a message to a specific user add it here
   public let destinationUserId: String?
 
-  public init(text: String, link: NSURL? = nil, destinationUserId: String? = nil) {
+  public init(text: String, link: URL? = nil, destinationUserId: String? = nil) {
     self.text = text
     self.link = link
     self.destinationUserId = destinationUserId

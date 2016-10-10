@@ -14,26 +14,26 @@ public extension ShareViewController {
   public static func presentShareViewController(from viewController: UIViewController,
                                                      shareContent: ShareContent,
                                                      options: ShareOptions = ShareOptions(),
-                                                     completion: ((Bool, ShareContent?) -> ())) {
+                                                     completion: @escaping ((Bool, ShareContent?) -> ())) {
 
 
     let shareViewController = ShareViewController()
     shareViewController.completion = completion
     shareViewController.options = options
     shareViewController.shareContent = shareContent
-    shareViewController.modalPresentationStyle = .OverCurrentContext
-    viewController.presentViewController(shareViewController, animated: false, completion: nil)
+    shareViewController.modalPresentationStyle = .overCurrentContext
+    viewController.present(shareViewController, animated: false, completion: nil)
   }
 }
 
-public class ShareViewController: UIViewController {
+open class ShareViewController: UIViewController {
 
-  private var metadataImageViewSize = CGSize(width: 70, height: 70)
+  fileprivate var metadataImageViewSize = CGSize(width: 70, height: 70)
 
-  private var shareContent: ShareContent? {
+  fileprivate var shareContent: ShareContent? {
     willSet(value) {
-      if let currentValue = shareContent, newValue = value
-        where newValue.link == currentValue.link {
+      if let currentValue = shareContent, let newValue = value
+        , newValue.link == currentValue.link {
         return
       }
       guard let newValue = value else {
@@ -53,18 +53,18 @@ public class ShareViewController: UIViewController {
     }
   }
 
-  private var options: ShareOptions? {
+  fileprivate var options: ShareOptions? {
     didSet {
       guard let options = options else {
         return
       }
       dismissButton.tintColor = options.tintColor
-      dismissButton.setTitle(options.dismissText, forState: .Normal)
-      dismissButton.setTitleColor(options.tintColor, forState: .Normal)
+      dismissButton.setTitle(options.dismissText, for: UIControlState())
+      dismissButton.setTitleColor(options.tintColor, for: UIControlState())
 
       confirmButton.titleLabel?.textColor = options.tintColor
-      confirmButton.setTitle(options.confirmText, forState: .Normal)
-      confirmButton.setTitleColor(options.tintColor, forState: .Normal)
+      confirmButton.setTitle(options.confirmText, for: UIControlState())
+      confirmButton.setTitleColor(options.tintColor, for: UIControlState())
 
       popupTitle.text = options.title
       popupBody.resignFirstResponder()
@@ -74,7 +74,7 @@ public class ShareViewController: UIViewController {
     }
   }
 
-  private var showMetadata = true {
+  fileprivate var showMetadata = true {
     didSet {
       guard !metadataImageView.constraints.isEmpty else {
         return
@@ -84,73 +84,73 @@ public class ShareViewController: UIViewController {
         make.height.equalTo(size.height)
         make.width.equalTo(size.width)
       }
-      UIView.animateWithDuration(0.5) {
+      UIView.animate(withDuration: 0.5, animations: {
         self.metadataImageView.layoutIfNeeded()
-      }
+      }) 
     }
   }
 
-  private var completion: ((Bool, ShareContent?) -> ())?
+  fileprivate var completion: ((Bool, ShareContent?) -> ())?
 
   lazy var dismissButton: UIButton = {
-    let button = UIButton(type: .Custom)
-    button.addTarget(self, action: #selector(cancelAction), forControlEvents: .TouchUpInside)
-    button.titleLabel?.font = UIFont.systemFontOfSize(15)
-    button.titleLabel?.textAlignment = .Right
+    let button = UIButton(type: .custom)
+    button.addTarget(self, action: #selector(cancelAction), for: .touchUpInside)
+    button.titleLabel?.font = UIFont.systemFont(ofSize: 15)
+    button.titleLabel?.textAlignment = .right
     return button
   }()
 
   lazy var confirmButton: UIButton = {
-    let button = UIButton(type: .Custom)
-    button.addTarget(self, action: #selector(sendAction), forControlEvents: .TouchUpInside)
-    button.titleLabel?.font = UIFont.boldSystemFontOfSize(17)
-    button.titleLabel?.textAlignment = .Left
+    let button = UIButton(type: .custom)
+    button.addTarget(self, action: #selector(sendAction), for: .touchUpInside)
+    button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 17)
+    button.titleLabel?.textAlignment = .left
     return button
   }()
 
   lazy var popupTitle: UILabel = {
     let label = UILabel()
-    label.font = UIFont.systemFontOfSize(17)
+    label.font = UIFont.systemFont(ofSize: 17)
     label.minimumScaleFactor = 0.5
     label.adjustsFontSizeToFitWidth = true
-    label.textAlignment = .Center
+    label.textAlignment = .center
     return label
   }()
 
   lazy var titleDivider: UIView = {
     let view = UIView()
-    view.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.3)
+    view.backgroundColor = UIColor.black.withAlphaComponent(0.3)
     return view
   }()
 
   lazy var popupBody: UITextView = {
     let textField = UITextView()
-    textField.editable = true
-    textField.backgroundColor = UIColor.clearColor()
-    textField.scrollEnabled = true
-    textField.font = UIFont.systemFontOfSize(17)
+    textField.isEditable = true
+    textField.backgroundColor = UIColor.clear
+    textField.isScrollEnabled = true
+    textField.font = UIFont.systemFont(ofSize: 17)
     textField.becomeFirstResponder()
     return textField
   }()
 
   lazy var metadataImageView: UIImageView = {
     let imageView = UIImageView()
-    imageView.contentMode = .ScaleAspectFill
+    imageView.contentMode = .scaleAspectFill
     imageView.clipsToBounds = true
-    imageView.backgroundColor = UIColor.whiteColor()
+    imageView.backgroundColor = UIColor.white
     imageView.layer.borderWidth = 1
-    imageView.layer.borderColor = UIColor.blackColor().colorWithAlphaComponent(0.3).CGColor
+    imageView.layer.borderColor = UIColor.black.withAlphaComponent(0.3).cgColor
     return imageView
   }()
 
   lazy var backgroundView: UIView = {
     let view = UIView()
-    view.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.6)
+    view.backgroundColor = UIColor.black.withAlphaComponent(0.6)
     return view
   }()
 
   lazy var containerView: UIVisualEffectView = {
-    let visualEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .ExtraLight))
+    let visualEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .extraLight))
     visualEffectView.layer.cornerRadius = 8
     visualEffectView.clipsToBounds = true
     visualEffectView.alpha = 0
@@ -159,30 +159,30 @@ public class ShareViewController: UIViewController {
 
   var metadataWebView = WKWebView()
 
-  override public func viewDidLoad() {
+  override open func viewDidLoad() {
     super.viewDidLoad()
     setupViews()
   }
 
-  public override func viewWillAppear(animated: Bool) {
+  open override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     showView()
   }
 
-  public override func viewWillDisappear(animated: Bool) {
+  open override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
     hideView()
   }
 
-  public override func preferredStatusBarStyle() -> UIStatusBarStyle {
-    return .LightContent
+  open override var preferredStatusBarStyle : UIStatusBarStyle {
+    return .lightContent
   }
 
   func cancelAction() {
     shareContent?.text = popupBody.text
     completion?(false, shareContent)
     hideView { _ in
-      self.dismissViewControllerAnimated(false, completion: nil)
+      self.dismiss(animated: false, completion: nil)
     }
   }
 
@@ -190,22 +190,22 @@ public class ShareViewController: UIViewController {
     shareContent?.text = popupBody.text
     completion?(true, shareContent)
     hideView { _ in
-      self.dismissViewControllerAnimated(false, completion: nil)
+      self.dismiss(animated: false, completion: nil)
     }
   }
 }
 
 extension ShareViewController: WKNavigationDelegate {
-  public func webView(webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!,
-                      withError error: NSError) {
+  public func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!,
+                      withError error: Error) {
     print("failed navigation")
   }
 
-  public func webView(webView: WKWebView, didFinishNavigation navigation: WKNavigation!) {
-    let dispatchTime: dispatch_time_t =
-      dispatch_time(DISPATCH_TIME_NOW, Int64(1 * Double(NSEC_PER_SEC)))
+  public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+    let dispatchTime: DispatchTime =
+      DispatchTime.now() + Double(Int64(1 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
 
-    dispatch_after(dispatchTime, dispatch_get_main_queue(), {
+    DispatchQueue.main.asyncAfter(deadline: dispatchTime, execute: {
       self.snapWebView(webView)
     })
   }
@@ -213,14 +213,14 @@ extension ShareViewController: WKNavigationDelegate {
 
 extension ShareViewController {
 
-  private func loadMetadata(shareContent: ShareContent) {
-    guard let link = shareContent.link where self.showMetadata else {
+  fileprivate func loadMetadata(_ shareContent: ShareContent) {
+    guard let link = shareContent.link , self.showMetadata else {
       print("No link found / metadata disabled")
       return
     }
 
     OpenGraph.fetchMetadata(link, completion: { [weak self] (response) in
-      guard let response = response, imageURL = response.imageURL else {
+      guard let response = response, let imageURL = response.imageURL else {
         self?.loadWebView(link)
         return
       }
@@ -228,36 +228,36 @@ extension ShareViewController {
       })
   }
 
-  private func loadWebView(url: NSURL) {
+  fileprivate func loadWebView(_ url: URL) {
     metadataWebView.navigationDelegate = self
-    metadataWebView.loadRequest(NSURLRequest(URL: url))
+    metadataWebView.load(URLRequest(url: url))
   }
 
-  private func snapWebView(webView: WKWebView) {
+  fileprivate func snapWebView(_ webView: WKWebView) {
     metadataImageView.fadeSetImage(webView.screenshot)
   }
 
-  private func showView() {
-    UIView.animateWithDuration(0.7) {
+  fileprivate func showView() {
+    UIView.animate(withDuration: 0.7, animations: {
       self.containerView.alpha = 1
-    }
+    }) 
   }
 
-  private func hideView(completion: ((Bool)->())? = nil) {
+  fileprivate func hideView(_ completion: ((Bool)->())? = nil) {
     popupBody.resignFirstResponder()
-    UIView.animateWithDuration(0.5) {
+    UIView.animate(withDuration: 0.5, animations: {
       self.backgroundView.alpha = 0
-    }
+    }) 
 
-    UIView.animateWithDuration(0.5,
+    UIView.animate(withDuration: 0.5,
                                animations: {
                                 self.containerView.alpha = 0
       },
                                completion: completion)
   }
 
-  private func setupViews() {
-    view.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.1)
+  fileprivate func setupViews() {
+    view.backgroundColor = UIColor.white.withAlphaComponent(0.1)
     view.addSubview(backgroundView)
     backgroundView.snp_makeConstraints { make in
       make.edges.equalTo(self.view)
@@ -278,7 +278,7 @@ extension ShareViewController {
       make.left.equalTo(contentView).inset(8)
       make.height.equalTo(40)
     }
-    dismissButton.setContentCompressionResistancePriority(UILayoutPriority.init(1000), forAxis: UILayoutConstraintAxis.Horizontal)
+    dismissButton.setContentCompressionResistancePriority(UILayoutPriority.init(1000), for: UILayoutConstraintAxis.horizontal)
 
 
     contentView.addSubview(confirmButton)
@@ -288,7 +288,7 @@ extension ShareViewController {
       make.height.equalTo(40)
     }
     confirmButton.setContentCompressionResistancePriority(UILayoutPriority.init(1000),
-                                                          forAxis: .Horizontal)
+                                                          for: .horizontal)
 
     contentView.addSubview(titleDivider)
     titleDivider.snp_makeConstraints { make in
@@ -308,7 +308,7 @@ extension ShareViewController {
       make.right.equalTo(confirmButton.snp_left).offset(-4)
     }
     popupTitle.setContentHuggingPriority(UILayoutPriority.init(1),
-                                         forAxis: .Horizontal)
+                                         for: .horizontal)
 
     let dummyContentView = UIView()
     contentView.addSubview(dummyContentView)

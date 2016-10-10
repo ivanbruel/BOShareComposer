@@ -10,29 +10,29 @@ import UIKit
 
 extension UIImageView {
 
-  func setImage(withUrl url: NSURL) {
-    let session = NSURLSession.sharedSession()
-    let request = NSMutableURLRequest(URL: url, cachePolicy: .ReturnCacheDataElseLoad,
+  func setImage(withUrl url: URL) {
+    let session = URLSession.shared
+    let request = MutableURLRequest(url: url, cachePolicy: .returnCacheDataElseLoad,
                                       timeoutInterval: 10)
-    let task = session.dataTaskWithRequest(request) { (data, response, error) in
-      dispatch_async(dispatch_get_main_queue()) {
-        guard let data = data where error == nil else {
+    let task = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) in
+      DispatchQueue.main.async {
+        guard let data = data , error == nil else {
           self.image = nil
           return
         }
         self.fadeSetImage(UIImage(data: data))
       }
-    }
+    })
+
     task.resume()
   }
 
-  func fadeSetImage(image:UIImage?)
-  {
-    UIView.transitionWithView(self,
-                              duration: 0.3,
-                              options: .TransitionCrossDissolve,
-                              animations: {
-                                self.image = image
+  func fadeSetImage(_ image:UIImage?) {
+    UIView.transition(with: self,
+                      duration: 0.3,
+                      options: .transitionCrossDissolve,
+                      animations: {
+                        self.image = image
       }, completion: nil)
   }
 }

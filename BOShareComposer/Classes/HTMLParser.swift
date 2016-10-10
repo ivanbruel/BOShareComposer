@@ -11,19 +11,19 @@ import Kanna
 
 class HTMLParser {
 
-  private let document: HTMLDocument
+  fileprivate let document: HTMLDocument
 
   init?(html: String) {
-    guard let document = Kanna.HTML(html: html, encoding: NSUTF8StringEncoding) else { return nil }
+    guard let document = Kanna.HTML(html: html, encoding: String.Encoding.utf8) else { return nil }
 
     self.document = document
   }
 
-  func contentFromMetatag(metatag: String) -> String? {
+  func contentFromMetatag(_ metatag: String) -> String? {
     return document.head?.xpath(xpathForMetatag(metatag)).first?["content"]
   }
 
-  private func xpathForMetatag(metatag: String) -> String {
+  fileprivate func xpathForMetatag(_ metatag: String) -> String {
     return "//meta[@property='\(metatag)'] | //meta[@name='\(metatag)']"
   }
 }
